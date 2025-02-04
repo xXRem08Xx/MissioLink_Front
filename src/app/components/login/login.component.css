@@ -1,0 +1,32 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.nz-form-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.nz-form-label {
+  width: 120px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.nz-form-control {
+  flex: 1;
+}
