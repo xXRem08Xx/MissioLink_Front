@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 export interface Mission {
   id: number;
@@ -9,7 +9,6 @@ export interface Mission {
   description: string;
   prix: number;
   localisation: string;
-  // Vous pouvez ajouter d'autres propriétés si nécessaire
 }
 
 @Injectable({
@@ -17,6 +16,7 @@ export interface Mission {
 })
 export class MissionService {
   private apiUrl = environment.apiUrl + '/missions';
+
   constructor(private http: HttpClient) {}
 
   getMissions(): Observable<Mission[]> {

@@ -1,0 +1,12 @@
+<div class="missions-container">
+  <nz-card *ngFor="let mission of missions" class="mission-card" nzHoverable (click)="openMissionDetail(mission)">
+    <nz-card-meta
+      [nzTitle]="mission.titre"
+      [nzDescription]="(mission.description | slice:0:100) + '...'">
+    </nz-card-meta>
+    <div class="mission-info">
+      <p>Prix : {{ mission.prix }} €</p>
+      <p>Localisation : {{ mission.localisation }}</p>
+    </div>
+  </nz-card>
+</div>

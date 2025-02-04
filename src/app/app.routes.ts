@@ -11,7 +11,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard], 
     children: [
       { path: 'dashboard', loadChildren: () => import('./components/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES) },
-      { path: 'profile', loadChildren: () => import('./components/profile/profile.routes').then(m => m.PROFILE_ROUTES) }
+      { path: 'profile', loadChildren: () => import('./components/profile/profile.routes').then(m => m.PROFILE_ROUTES) },
+      { path: 'missions', loadChildren: () => import('./components/mission/missions/missions.routes').then(m => m.MISSIONS_ROUTES) },
+      { path: 'mission/:id', loadChildren: () => import('./components/mission/mission-detail/mission-detail.routes').then(m => m.MISSION_DETAIL_ROUTES) },
     ]
   },
   {

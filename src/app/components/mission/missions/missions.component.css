@@ -1,0 +1,11 @@
+.missions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.mission-card {
+  width: 300px;
+  cursor: pointer;
+}

@@ -1,0 +1,5 @@
+<nz-card *ngIf="mission" [nzTitle]="mission.titre" [nzLoading]="loading">
+  <p>{{ mission.description }}</p>
+  <p><strong>Prix :</strong> {{ mission.prix }} €</p>
+  <p><strong>Localisation :</strong> {{ mission.localisation }}</p>
+</nz-card>
