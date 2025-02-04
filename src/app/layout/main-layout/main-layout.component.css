@@ -1,8 +1,53 @@
-.app-layout {
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#app-layout {
+  width: 100vw;
   height: 100vh;
 }
+
+.app-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.menu-sidebar {
+  flex: 0 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.main-content nz-content {
+  flex: 1;
+}
+
 .inner-content {
+  height: 100%;
   padding: 24px;
   background: #fff;
-  min-height: 360px;
+}
+
+.collapse-trigger {
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.logout-container {
+  padding: 16px;
+  text-align: center;
 }

@@ -1,4 +1,4 @@
-<nz-layout class="app-layout">
+<nz-layout class="app-layout" id="app-layout">
   <nz-sider class="menu-sidebar"
     nzCollapsible
     nzWidth="256px"
@@ -8,7 +8,7 @@
     <div class="sidebar-logo">
       <a href="https://ng.ant.design/" target="_blank">
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
-        <h1>Ant Design of Angular</h1>
+        <h1 *ngIf="!isCollapsed">Ant Design of Angular</h1>
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
@@ -33,15 +33,14 @@
         </ul>
       </li>
     </ul>
+    <div class="collapse-trigger" (click)="isCollapsed = !isCollapsed">
+      <nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" style="font-size: 18px;"></nz-icon>
+    </div>
+    <div class="logout-container">
+      <button nz-button nzType="default" (click)="logout()">Déconnecter</button>
+    </div>
   </nz-sider>
-  <nz-layout>
-    <nz-header>
-      <div class="app-header">
-        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-          <nz-icon class="trigger" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
-        </span>
-      </div>
-    </nz-header>
+  <nz-layout class="main-content" id="main-content">
     <nz-content>
       <div class="inner-content">
         <router-outlet></router-outlet>

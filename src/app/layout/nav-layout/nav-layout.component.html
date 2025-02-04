@@ -1,0 +1,36 @@
+<nz-layout class="app-layout">
+  <nz-header class="app-header">
+    <div class="nav-left">
+      <a routerLink="/dashboard" class="logo">
+        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
+        <span class="app-name">MissioLink</span>
+      </a>
+      <ul nz-menu nzTheme="dark" nzMode="horizontal" class="nav-menu">
+        <li nz-menu-item routerLink="/dashboard" (click)="goToDashboard()">Dashboard</li>
+        <li nz-menu-item routerLink="/profile" (click)="goToProfile()">Profile</li>
+        <li nz-menu-item routerLink="/missions" (click)="goToMissions()">Missions</li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <!-- <nz-dropdown [nzDropdownMenu]="userMenu">
+        <nz-avatar nzSize="large" nzSrc="assets/images/avatar.png" nzStyle="cursor: pointer;"></nz-avatar>
+      </nz-dropdown> -->
+      <button nz-icon nzType="logout" style="margin-right:8px;" (click)="logout()"></button>Déconnexion
+      <nz-dropdown-menu #userMenu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item (click)="goToProfile()">
+            <i nz-icon nzType="user" style="margin-right:8px;"></i>Profil
+          </li>
+          <li nz-menu-item (click)="logout()">
+            <i nz-icon nzType="logout" style="margin-right:8px;"></i>Déconnexion
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
+  </nz-header>
+  <nz-content class="app-content">
+    <div class="inner-content">
+      <router-outlet></router-outlet>
+    </div>
+  </nz-content>
+</nz-layout>
