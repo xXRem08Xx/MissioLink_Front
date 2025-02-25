@@ -74,4 +74,9 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('access_token');
   }
+
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/user`, data);
+  }
+  
 }
