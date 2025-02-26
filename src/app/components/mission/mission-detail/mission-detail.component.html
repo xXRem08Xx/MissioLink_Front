@@ -28,15 +28,35 @@
         </div>
       </div>
     </div>
-    <div class="action-buttons">
-      <ng-container *ngIf="mission.employer?.id === currentUserId; else candidateActions">
-        <button nz-button nzType="primary" (click)="editMission()">Modifier</button>
-        <button nz-button nzType="default" (click)="confirmDelete()">Supprimer</button>
-        <button nz-button nzType="default" (click)="viewCandidates()">Candidatures</button>
+    <!-- Partie pour le propriétaire -->
+    <div class="action-buttons" *ngIf="mission.employer?.id === currentUserId">
+      <ng-container *ngIf="isAcceptedCandidate; else candidateActions">
+        <div class="worker-info">
+          <h3>Travailleur sélectionné :</h3>
+          <p>{{ mission.worker?.nom }} {{ mission.worker?.prenom }} - {{ mission.worker?.email }}</p>
+        </div>
+        <button nz-button nzType="primary" (click)="finishMission()">Terminer la tâche</button>
       </ng-container>
       <ng-template #candidateActions>
-        <button nz-button nzType="primary" *ngIf="!hasApplied" (click)="confirmApply()">Postuler</button>
-        <button nz-button nzType="default" *ngIf="hasApplied" (click)="confirmCancel()">Annuler candidature</button>
+        <button nz-button nzType="primary" (click)="openEditModal()">Modifier</button>
+        <button nz-button nzType="default" (click)="confirmDelete()">Supprimer</button>
+        <button nz-button nzType="default" (click)="openCandidatesModal()">Choisir un travailleur</button>
+      </ng-template>
+    </div>
+    <!-- Partie pour les candidats non-propriétaires -->
+    <div class="action-buttons" *ngIf="mission.employer?.id !== currentUserId">
+      <ng-container *ngIf="isAcceptedCandidate && mission.worker?.id === currentUserId; else notChosen">
+        <p class="info-message">
+          Vous avez été choisi pour cette mission, veuillez contacter le propriétaire de la mission pour parler.
+        </p>
+      </ng-container>
+      <ng-template #notChosen>
+        <ng-container *ngIf="!hasApplied; else cancelBlock">
+          <button nz-button nzType="primary" (click)="confirmApply()">Postuler</button>
+        </ng-container>
+        <ng-template #cancelBlock>
+          <button nz-button nzType="default" (click)="confirmCancel()">Annuler candidature</button>
+        </ng-template>
       </ng-template>
     </div>
   </div>

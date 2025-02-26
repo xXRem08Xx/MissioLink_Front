@@ -1,0 +1,11 @@
+<div>
+  <h2>Candidatures</h2>
+  <div *ngIf="loading">Chargement...</div>
+  <ul *ngIf="!loading">
+    <li *ngFor="let c of candidates">
+      {{ c.user.nom }} {{ c.user.prenom }} - {{ c.user.email }}
+      <button nz-button nzType="primary" (click)="accept(c.id)">Accepter</button>
+    </li>
+  </ul>
+  <button nz-button nzType="default" (click)="close()">Fermer</button>
+</div>
