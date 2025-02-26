@@ -1,5 +1,43 @@
 <nz-card *ngIf="mission" [nzTitle]="mission.titre" [nzLoading]="loading">
-  <p>{{ mission.description }}</p>
-  <p><strong>Prix :</strong> {{ mission.prix }} €</p>
-  <p><strong>Localisation :</strong> {{ mission.localisation }}</p>
+  <div class="mission-detail">
+    <div class="mission-info">
+      <div class="info-box">
+        <h3>Description</h3>
+        <p>{{ mission.description }}</p>
+      </div>
+      <div class="info-box">
+        <h3>Prix</h3>
+        <p>{{ mission.prix }} €</p>
+      </div>
+      <div class="info-box">
+        <h3>Localisation</h3>
+        <p>{{ mission.localisation }}</p>
+      </div>
+    </div>
+    <div *ngIf="mission.employer">
+      <h3>Contact de l'employeur</h3>
+      <div class="contact-box">
+        <div class="contact-item">
+          <strong>Email :</strong> {{ mission.employer.email }}
+        </div>
+        <div class="contact-item" *ngIf="mission.employer.telephone">
+          <strong>Téléphone :</strong> {{ mission.employer.telephone }}
+        </div>
+        <div class="contact-item" *ngIf="mission.employer.adresse">
+          <strong>Adresse :</strong> {{ mission.employer.adresse }}
+        </div>
+      </div>
+    </div>
+    <div class="action-buttons">
+      <ng-container *ngIf="mission.employer?.id === currentUserId; else candidateActions">
+        <button nz-button nzType="primary" (click)="editMission()">Modifier</button>
+        <button nz-button nzType="default" (click)="confirmDelete()">Supprimer</button>
+        <button nz-button nzType="default" (click)="viewCandidates()">Candidatures</button>
+      </ng-container>
+      <ng-template #candidateActions>
+        <button nz-button nzType="primary" *ngIf="!hasApplied" (click)="confirmApply()">Postuler</button>
+        <button nz-button nzType="default" *ngIf="hasApplied" (click)="confirmCancel()">Annuler candidature</button>
+      </ng-template>
+    </div>
+  </div>
 </nz-card>

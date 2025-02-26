@@ -9,7 +9,12 @@ export interface Mission {
   description: string;
   prix: number;
   localisation: string;
+  employer?: { id: number; email: string; nom: string; prenom: string; telephone?: string; adresse?: string };
+  candidatures?: Array<{ user: { id: number } }>;
+  categories?: Array<{ label: string }>;
 }
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +30,29 @@ export class MissionService {
 
   getMission(id: number): Observable<Mission> {
     return this.http.get<Mission>(`${this.apiUrl}/${id}`);
+  }
+
+  apply(missionId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${missionId}/apply`, {});
+  }  
+  
+  cancelApply(missionId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${missionId}/apply`);
+  }
+  
+  updateMission(missionId: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${missionId}`, data);
+  }
+  
+  deleteMission(missionId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${missionId}`);
+  }
+  
+  viewCandidates(missionId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${missionId}/candidates`);
+  }
+  
+  acceptCandidate(missionId: number, candidateId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${missionId}/candidates/${candidateId}/accept`, {});
   }
 }

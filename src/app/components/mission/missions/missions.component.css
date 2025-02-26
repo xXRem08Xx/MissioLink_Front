@@ -1,5 +1,11 @@
 .missions-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.missions-list {
+  display: flex;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
