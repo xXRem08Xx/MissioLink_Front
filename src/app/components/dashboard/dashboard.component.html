@@ -1,2 +1,39 @@
-<h1>Bienvenue sur votre dashboard</h1>
-<p>Ceci est le dashboard.</p>
+<div class="dashboard-container">
+  <div class="column left-column">
+    <h2>Missions créées</h2>
+    <div *ngIf="loading">Chargement...</div>
+    <div *ngIf="!loading && createdMissions.length === 0">
+      Aucune mission créée.
+    </div>
+    <div class="missions-list" *ngIf="!loading">
+      <div *ngFor="let mission of createdMissions" class="mission-card">
+        <h3>{{ mission.titre }}</h3>
+        <p>{{ mission.description | slice:0:100 }}...</p>
+        <div class="actions">
+          <button (click)="viewMissionDetail(mission)">Détails</button>
+          <button (click)="editMission(mission)">Modifier</button>
+          <button (click)="deleteMission(mission)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column right-column">
+    <h2>Missions auxquelles j'ai postulé</h2>
+    <div *ngIf="loading">Chargement...</div>
+    <div *ngIf="!loading && candidateMissions.length === 0">
+      Vous n'avez postulé à aucune mission.
+    </div>
+    <div class="missions-list" *ngIf="!loading">
+      <div *ngFor="let mission of candidateMissions" class="mission-card" [ngClass]="{'accepted': mission.worker && mission.worker.id === currentUserId}">
+        <h3>{{ mission.titre }}</h3>
+        <p>{{ mission.description | slice:0:100 }}...</p>
+        <div class="actions">
+          <button (click)="viewMissionDetail(mission)">Détails</button>
+        </div>
+        <div *ngIf="mission.worker && mission.worker.id === currentUserId" class="accepted-message">
+          Vous avez été choisi pour cette mission, veuillez contacter l'employeur.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -96,18 +96,8 @@ export class MissionDetailComponent implements OnInit {
   }
 
   openEditModal(): void {
-    const modalRef = this.modal.create({
-      nzTitle: 'Modifier la mission',
-      nzContent: MissionEditComponent,
-      nzData: { mission: this.mission },
-      nzFooter: null
-    });
-    modalRef.afterClose.subscribe(result => {
-      if (result) {
-        this.mission = result;
-        this.message.success('Mission mise à jour.');
-      }
-    });
+    var mission = this.mission;
+    this.router.navigate(['/mission', this.mission?.id, 'edit'], { state: { mission } });
   }
 
   openCandidatesModal(): void {

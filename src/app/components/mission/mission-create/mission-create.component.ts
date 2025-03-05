@@ -6,19 +6,17 @@ import { CategoryService, Category } from '../../../services/category/category.s
 import { NzModalRef, NzModalModule } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-mission-create',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NzModalModule, NzSelectModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NzModalModule, NzSelectModule],
   templateUrl: './mission-create.component.html',
-  styleUrls: ['./mission-create.component.css'] 
+  styleUrls: ['./mission-create.component.css']
 })
 export class MissionCreateComponent implements OnInit {
   createForm!: FormGroup;
   categories: Category[] = [];
-  selectedCategories: Category[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -29,12 +27,15 @@ export class MissionCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Création du formGroup avec un contrôle pour les catégories (initialisé à un tableau vide)
     this.createForm = this.fb.group({
       titre: ['', Validators.required],
       description: ['', Validators.required],
       prix: [0, [Validators.required, Validators.min(0)]],
-      adresse: ['', Validators.required]
+      adresse: ['', Validators.required],
+      categories: [[], Validators.required]
     });
+    // Récupération des catégories depuis le service
     this.categoryService.getCategories().subscribe(data => {
       this.categories = data;
     });
@@ -43,7 +44,7 @@ export class MissionCreateComponent implements OnInit {
   submit(): void {
     if (this.createForm.valid) {
       const formData = this.createForm.value;
-      formData.categories = this.selectedCategories.map(cat => cat.id);
+      console.log('Formulaire soumis : ', formData);
       this.missionService.create(formData).subscribe(response => {
         this.message.success('Mission créée.');
         this.modalRef.close(response);
