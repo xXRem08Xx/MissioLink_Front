@@ -3,10 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MissionService, Mission } from '../../../services/mission/mission.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
 import { CommonModule } from '@angular/common';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { MissionEditComponent } from '../mission-edit/mission-edit.component';
+import { MissionCandidatesComponent } from '../mission-candidates/mission-candidates.component';
 
 @Component({
   selector: 'app-mission-detail',
@@ -49,6 +51,10 @@ export class MissionDetailComponent implements OnInit {
     }
   }
 
+  get isAcceptedCandidate(): boolean {
+    return !!(this.mission?.worker && this.mission.worker.id === this.currentUserId);
+  }
+
   confirmApply(): void {
     this.modal.confirm({
       nzTitle: 'Confirmer votre candidature',
@@ -77,6 +83,10 @@ export class MissionDetailComponent implements OnInit {
 
   cancelApplication(): void {
     if (!this.mission) { return; }
+    if (this.isAcceptedCandidate) {
+      this.message.error('Vous ne pouvez pas annuler votre candidature car vous êtes déjà accepté.');
+      return;
+    }
     this.missionService.cancelApply(this.mission.id).subscribe(() => {
       this.message.success('Votre candidature a été annulée.');
       this.hasApplied = false;
@@ -85,8 +95,34 @@ export class MissionDetailComponent implements OnInit {
     });
   }
 
-  editMission(): void {
-    this.router.navigate(['/missions', this.mission?.id, 'edit']);
+  openEditModal(): void {
+    const modalRef = this.modal.create({
+      nzTitle: 'Modifier la mission',
+      nzContent: MissionEditComponent,
+      nzData: { mission: this.mission },
+      nzFooter: null
+    });
+    modalRef.afterClose.subscribe(result => {
+      if (result) {
+        this.mission = result;
+        this.message.success('Mission mise à jour.');
+      }
+    });
+  }
+
+  openCandidatesModal(): void {
+    const modalRef = this.modal.create({
+      nzTitle: 'Liste des candidatures',
+      nzContent: MissionCandidatesComponent,
+      nzData: { missionId: this.mission?.id },
+      nzFooter: null
+    });
+    modalRef.afterClose.subscribe(result => {
+      if (result) {
+        this.mission!.worker = result;
+        this.message.success('Travailleur sélectionné.');
+      }
+    });
   }
 
   confirmDelete(): void {
@@ -107,7 +143,7 @@ export class MissionDetailComponent implements OnInit {
     });
   }
 
-  viewCandidates(): void {
-    this.router.navigate(['/missions', this.mission?.id, 'candidates']);
+  finishMission(): void {
+    this.message.success('Mission terminée.');
   }
 }

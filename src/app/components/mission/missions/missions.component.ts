@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AuthService } from '../../../services/auth/auth.service';
+import { CategoryService, Category } from '../../../services/category/category.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -17,15 +18,16 @@ import { FormsModule } from '@angular/forms';
 export class MissionsComponent implements OnInit {
   missions: Mission[] = [];
   filteredMissions: Mission[] = [];
-  categories: string[] = [];
-  selectedCategory: string | null = null;
+  categories: Category[] = [];
+  selectedCategories: Category[] = [];
   currentUserId: number | null = null;
   loading = false;
 
   constructor(
     private missionService: MissionService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -37,25 +39,23 @@ export class MissionsComponent implements OnInit {
     this.loading = true;
     this.missionService.getMissions().subscribe(data => {
       this.missions = data.filter(m => !this.currentUserId || m.employer?.id !== this.currentUserId);
-      const catSet = new Set<string>();
-      this.missions.forEach(m => {
-        if (m.categories && Array.isArray(m.categories)) {
-          m.categories.forEach(cat => {
-            if (cat.label) { catSet.add(cat.label); }
-          });
-        }
-      });
-      this.categories = Array.from(catSet);
       this.filteredMissions = this.missions;
       this.loading = false;
     });
+    this.categoryService.getCategories().subscribe(data => {
+      this.categories = data;
+    });
   }
 
-  onCategoryChange(value: string | null): void {
-    this.selectedCategory = value;
-    this.filteredMissions = value 
-      ? this.missions.filter(m => m.categories?.some(c => c.label === value))
-      : this.missions;
+  onCategoryChange(values: Category[]): void {
+    this.selectedCategories = values;
+    if (values && values.length > 0) {
+      this.filteredMissions = this.missions.filter(m => 
+        m.categories && m.categories.some(c => values.some(v => v.label === c.label))
+      );
+    } else {
+      this.filteredMissions = this.missions;
+    }
   }
 
   openMissionDetail(mission: Mission): void {

@@ -10,11 +10,10 @@ export interface Mission {
   prix: number;
   localisation: string;
   employer?: { id: number; email: string; nom: string; prenom: string; telephone?: string; adresse?: string };
-  candidatures?: Array<{ user: { id: number } }>;
+  candidatures?: Array<{ id: number; user: { id: number } }>;
   categories?: Array<{ label: string }>;
+  worker?: { id: number; email: string; nom: string; prenom: string; telephone?: string; adresse?: string };
 }
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -34,25 +33,29 @@ export class MissionService {
 
   apply(missionId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/${missionId}/apply`, {});
-  }  
-  
+  }
+
   cancelApply(missionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${missionId}/apply`);
   }
-  
+
   updateMission(missionId: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${missionId}`, data);
   }
-  
+
   deleteMission(missionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${missionId}`);
   }
-  
+
   viewCandidates(missionId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${missionId}/candidates`);
   }
-  
+
   acceptCandidate(missionId: number, candidateId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/${missionId}/candidates/${candidateId}/accept`, {});
   }
+
+  finishMission(missionId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${missionId}/finish`, {});
+  }  
 }
