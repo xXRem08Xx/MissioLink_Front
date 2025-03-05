@@ -11,8 +11,8 @@ export interface Mission {
   localisation: string;
   employer?: { id: number; email: string; nom: string; prenom: string; telephone?: string; adresse?: string };
   candidatures?: Array<{ id: number; user: { id: number } }>;
-  categories?: Array<{ label: string }>;
-  worker?: { id: number; email: string; nom: string; prenom: string; telephone?: string; adresse?: string };
+  categories?: Array<{ id: number; label: string }>;
+  worker?: { id: number; email: string; nom: string; prenom: string };
 }
 
 @Injectable({
@@ -29,6 +29,10 @@ export class MissionService {
 
   getMission(id: number): Observable<Mission> {
     return this.http.get<Mission>(`${this.apiUrl}/${id}`);
+  }
+
+  create(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
   }
 
   apply(missionId: number): Observable<any> {
@@ -54,8 +58,4 @@ export class MissionService {
   acceptCandidate(missionId: number, candidateId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/${missionId}/candidates/${candidateId}/accept`, {});
   }
-
-  finishMission(missionId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${missionId}/finish`, {});
-  }  
 }

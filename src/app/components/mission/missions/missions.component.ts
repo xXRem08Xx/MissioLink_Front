@@ -7,11 +7,14 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { CategoryService, Category } from '../../../services/category/category.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MissionCreateComponent } from '../mission-create/mission-create.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalWrapperModule } from '../../dependance/nzmodalservice.module';
 
 @Component({
   selector: 'app-missions',
   standalone: true,
-  imports: [CommonModule, NzCardModule, NzSelectModule, FormsModule],
+  imports: [CommonModule, NzCardModule, NzSelectModule, FormsModule, NzModalWrapperModule],
   templateUrl: './missions.component.html',
   styleUrls: ['./missions.component.css']
 })
@@ -27,7 +30,8 @@ export class MissionsComponent implements OnInit {
     private missionService: MissionService,
     private router: Router,
     private authService: AuthService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
@@ -49,16 +53,25 @@ export class MissionsComponent implements OnInit {
 
   onCategoryChange(values: Category[]): void {
     this.selectedCategories = values;
-    if (values && values.length > 0) {
-      this.filteredMissions = this.missions.filter(m => 
-        m.categories && m.categories.some(c => values.some(v => v.label === c.label))
-      );
-    } else {
-      this.filteredMissions = this.missions;
-    }
+    this.filteredMissions = values && values.length > 0
+      ? this.missions.filter(m => m.categories && m.categories.some(c => values.some(v => v.label === c.label)))
+      : this.missions;
   }
 
   openMissionDetail(mission: Mission): void {
     this.router.navigate(['/mission', mission.id]);
+  }
+
+  openCreateModal(): void {
+    const modalRef = this.modal.create({
+      nzTitle: 'Créer une nouvelle mission',
+      nzContent: MissionCreateComponent,
+      nzFooter: null
+    });
+    modalRef.afterClose.subscribe(result => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 }
