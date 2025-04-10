@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MissionService, Mission } from '../../services/mission/mission.service';
+import {
+  MissionService,
+  Mission,
+  Candidature,
+} from '../../services/mission/mission.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
@@ -11,7 +15,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, NzModalModule],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
   createdMissions: Mission[] = [];
@@ -34,12 +38,35 @@ export class DashboardComponent implements OnInit {
       this.currentUserId = parsed.user.id;
     }
     this.loading = true;
-    this.missionService.getMissions().subscribe(data => {
-      this.createdMissions = data.filter(m => m.employer && m.employer.id === this.currentUserId);
-      this.candidateMissions = data.filter(m => {
-        const isCandidate = m.candidatures && m.candidatures.some(c => c.user && c.user.id === this.currentUserId);
-        const isWorker = m.worker && m.worker.id === this.currentUserId;
-        return isCandidate || isWorker;
+    this.missionService.getMissions().subscribe((data) => {
+      this.createdMissions = data.filter(
+        (m) => m.employer && m.employer.id === this.currentUserId
+      );
+      this.candidateMissions = data.filter((m) => {
+        if (m.employer && m.employer.id === this.currentUserId) {
+          return false;
+        }
+        const candidature: Candidature | undefined = m.candidatures
+          ? m.candidatures.find(
+              (c) => c.user && c.user.id === this.currentUserId
+            )
+          : undefined;
+        if (!candidature) {
+          return false;
+        }
+        if (m.worker && m.worker.id === this.currentUserId) {
+          return true;
+        }
+        if (
+          candidature.statutCandidature &&
+          candidature.statutCandidature.label === 'Refusée'
+        ) {
+          const submissionDate = new Date(candidature.dateSoumission);
+          const oneWeekAgo = new Date();
+          oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+          return submissionDate >= oneWeekAgo;
+        }
+        return true;
       });
       this.loading = false;
     });
@@ -50,23 +77,54 @@ export class DashboardComponent implements OnInit {
   }
 
   editMission(mission: Mission): void {
-    this.router.navigate(['/mission', mission.id, 'edit'], { state: { mission } });
-  }
-  
-  deleteMission(mission: Mission): void {
-    this.modal.confirm({
-      nzTitle: 'Confirmer la suppression',
-      nzContent: 'Voulez-vous vraiment supprimer cette mission ? Cette action est irréversible.',
-      nzOkText: 'Oui',
-      nzCancelText: 'Non',
-      nzOnOk: () => {
-        this.missionService.deleteMission(mission.id).subscribe(() => {
-          this.message.success('Mission supprimée.');
-          this.ngOnInit();
-        }, error => {
-          this.message.error('Erreur lors de la suppression.');
-        });
-      }
+    this.router.navigate(['/mission', mission.id, 'edit'], {
+      state: { mission },
     });
+  }
+
+  deleteMission(mission: Mission): void {
+    this.missionService.deleteMission(mission.id).subscribe(() => {
+      this.message.success('Mission supprimée.');
+      this.ngOnInit();
+    });
+  }
+
+  getCandidateStatusClass(mission: Mission): string {
+    const status = this.getCandidateStatus(mission);
+    switch (status) {
+      case 'En attente':
+        return 'en-attente';
+      case 'Acceptée':
+        return 'acceptee';
+      case 'Refusée':
+        return 'refusee';
+      default:
+        return 'non-candidat';
+    }
+  }
+
+  getCandidateStatus(mission: Mission): string {
+    if (!this.currentUserId) {
+      return 'Non-candidat';
+    }
+    const candidature: Candidature | undefined = mission.candidatures
+      ? mission.candidatures.find(
+          (c) => c.user && c.user.id === this.currentUserId
+        )
+      : undefined;
+    if (!candidature) {
+      return 'Non-candidat';
+    }
+    if (mission.worker && mission.worker.id === this.currentUserId) {
+      return 'Acceptée';
+    }
+    const label = candidature.statutCandidature?.label;
+    if (label === 'En attente') {
+      return 'En attente';
+    }
+    if (label === 'Refusée') {
+      return 'Refusée';
+    }
+    return 'Non-candidat';
   }
 }

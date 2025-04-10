@@ -24,14 +24,14 @@
       Vous n'avez postulé à aucune mission.
     </div>
     <div class="missions-list" *ngIf="!loading">
-      <div *ngFor="let mission of candidateMissions" class="mission-card" [ngClass]="{'accepted': mission.worker && mission.worker.id === currentUserId}">
+      <div *ngFor="let mission of candidateMissions" class="mission-card" [ngClass]="getCandidateStatusClass(mission)">
         <h3>{{ mission.titre }}</h3>
         <p>{{ mission.description | slice:0:100 }}...</p>
         <div class="actions">
           <button (click)="viewMissionDetail(mission)">Détails</button>
         </div>
-        <div *ngIf="mission.worker && mission.worker.id === currentUserId" class="accepted-message">
-          Vous avez été choisi pour cette mission, veuillez contacter l'employeur.
+        <div class="status-label">
+          Statut: {{ getCandidateStatus(mission) }}
         </div>
       </div>
     </div>

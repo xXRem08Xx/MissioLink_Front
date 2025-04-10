@@ -23,13 +23,23 @@
 }
 
 .mission-card {
-  border: 1px solid #e8e8e8;
+  border: 2px solid #e8e8e8;
   border-radius: 4px;
   padding: 16px;
 }
 
-.mission-card.accepted {
+/* Styles selon le statut */
+.mission-card.non-candidat {
+  border-color: #e8e8e8;
+}
+.mission-card.en-attente {
+  border-color: orange;
+}
+.mission-card.acceptee {
   border-color: green;
+}
+.mission-card.refusee {
+  border-color: red;
 }
 
 .actions {
@@ -38,8 +48,7 @@
   gap: 8px;
 }
 
-.accepted-message {
+.status-label {
   margin-top: 8px;
-  color: green;
   font-weight: bold;
 }
