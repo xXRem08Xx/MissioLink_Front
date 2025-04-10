@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
-import { MissionEditComponent } from '../mission/mission-edit/mission-edit.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -55,9 +54,19 @@ export class DashboardComponent implements OnInit {
   }
   
   deleteMission(mission: Mission): void {
-    this.missionService.deleteMission(mission.id).subscribe(() => {
-      this.message.success('Mission supprimée.');
-      this.ngOnInit();
+    this.modal.confirm({
+      nzTitle: 'Confirmer la suppression',
+      nzContent: 'Voulez-vous vraiment supprimer cette mission ? Cette action est irréversible.',
+      nzOkText: 'Oui',
+      nzCancelText: 'Non',
+      nzOnOk: () => {
+        this.missionService.deleteMission(mission.id).subscribe(() => {
+          this.message.success('Mission supprimée.');
+          this.ngOnInit();
+        }, error => {
+          this.message.error('Erreur lors de la suppression.');
+        });
+      }
     });
   }
 }
