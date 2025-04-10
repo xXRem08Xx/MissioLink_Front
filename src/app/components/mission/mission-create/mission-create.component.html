@@ -12,22 +12,19 @@
     <input formControlName="prix" type="number" class="form-control">
   </div>
   <div class="form-group">
-    <label>Adresse</label>
-    <input formControlName="adresse" type="text" class="form-control">
+    <label>Localisation</label>
+    <input formControlName="localisation" type="text" nz-input [nzAutocomplete]="auto">
+    <nz-autocomplete #auto>
+      <nz-auto-option *ngFor="let suggestion of addressSuggestions" [nzValue]="suggestion.display_name" (click)="selectSuggestion(suggestion)">
+        {{ suggestion.display_name }}
+      </nz-auto-option>
+    </nz-autocomplete>
   </div>
+  <div id="map" #mapContainer style="height: 300px; margin-bottom: 16px;"></div>
   <div class="form-group">
     <label>Catégories</label>
-    <nz-select
-      formControlName="categories"
-      nzMode="multiple"
-      nzPlaceHolder="Sélectionnez des catégories"
-      nzShowSearch
-      style="width: 100%;">
-      <nz-option 
-        *ngFor="let cat of categories" 
-        [nzValue]="cat.id" 
-        [nzLabel]="cat.label">
-      </nz-option>
+    <nz-select formControlName="categories" nzMode="multiple" nzPlaceHolder="Sélectionnez des catégories" nzShowSearch style="width: 100%;">
+      <nz-option *ngFor="let cat of categories" [nzValue]="cat.id" [nzLabel]="cat.label"></nz-option>
     </nz-select>
   </div>
   <div class="modal-buttons">

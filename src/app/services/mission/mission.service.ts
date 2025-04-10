@@ -24,6 +24,8 @@ export interface Mission {
   description: string;
   prix: number;
   localisation: string;
+  latitude: number;
+  longitude: number;
   employer?: {
     id: number;
     nom: string;
