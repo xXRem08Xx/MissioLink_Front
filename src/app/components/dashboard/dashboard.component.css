@@ -1,15 +1,10 @@
 .dashboard-container {
-  display: flex;
-  gap: 24px;
   padding: 24px;
   background: #f0f2f5;
 }
 
-.column {
-  flex: 1;
-}
-
-.left-column, .right-column {
+.left-column,
+.right-column {
   background: #fff;
   padding: 16px;
   border: 1px solid #e8e8e8;

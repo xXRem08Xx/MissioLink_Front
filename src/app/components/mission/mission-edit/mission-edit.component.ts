@@ -43,9 +43,7 @@ export class MissionEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Récupérer la mission passée via l'état de navigation
     this.mission = history.state.mission;
-    // Si non présente, récupérer depuis l'URL
     if (!this.mission) {
       const id = this.route.snapshot.paramMap.get('id');
       if (id) {
@@ -69,9 +67,6 @@ export class MissionEditComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.editForm.value);
-    console.log(this.editForm.valid);
-
     this.modal.confirm({
       nzTitle: 'Confirmer la modification',
       nzContent: 'Voulez-vous enregistrer les modifications ?',

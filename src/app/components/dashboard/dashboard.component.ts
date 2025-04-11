@@ -1,23 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  MissionService,
-  Mission,
-  Candidature,
-} from '../../services/mission/mission.service';
+import { MissionService, Mission, Candidature } from '../../services/mission/mission.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, NzModalModule],
+  imports: [
+    CommonModule,
+    NzCardModule,
+    NzButtonModule,
+    NzGridModule,
+    NzSpinModule
+  ],
+  providers: [NzModalService, NzMessageService],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  // Votre code de composant ici...
   createdMissions: Mission[] = [];
   candidateMissions: Mission[] = [];
   currentUserId: number | null = null;

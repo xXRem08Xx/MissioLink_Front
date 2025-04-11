@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MissionService, Mission } from '../../../services/mission/mission.service';
 import { Router } from '@angular/router';
-import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { AuthService } from '../../../services/auth/auth.service';
 import { CategoryService, Category } from '../../../services/category/category.service';
@@ -10,11 +9,12 @@ import { FormsModule } from '@angular/forms';
 import { MissionCreateComponent } from '../mission-create/mission-create.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzModalWrapperModule } from '../../dependance/nzmodalservice.module';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-missions',
   standalone: true,
-  imports: [CommonModule, NzCardModule, NzSelectModule, FormsModule, NzModalWrapperModule],
+  imports: [CommonModule, NzTableModule, NzSelectModule, FormsModule, NzModalWrapperModule],
   templateUrl: './missions.component.html',
   styleUrls: ['./missions.component.css']
 })

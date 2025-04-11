@@ -1,19 +1,16 @@
-.missions-header {
-  width: 100%;
+.missions-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.missions-list {
-  display: flex;
-  flex-wrap: wrap;
   gap: 16px;
-  justify-content: center;
+  padding: 16px;
 }
 
-.mission-card {
-  width: 300px;
-  cursor: pointer;
+.missions-filters {
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.missions-table {
+  flex: 1;
 }

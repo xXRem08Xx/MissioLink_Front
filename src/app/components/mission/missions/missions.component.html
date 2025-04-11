@@ -1,23 +1,36 @@
-<div class="missions-header">
-  <nz-select
-    name="selectedCategories"
-    [(ngModel)]="selectedCategories"
-    (ngModelChange)="onCategoryChange($event)"
-    nzPlaceHolder="Filtrer par catégories"
-    [nzAllowClear]="true"
-    nzMode="multiple"
-    nzShowSearch
-    style="width: 200px;">
-    <nz-option *ngFor="let cat of categories" [nzValue]="cat" [nzLabel]="cat.label"></nz-option>
-  </nz-select>
-  <button nz-button nzType="primary" (click)="openCreateModal()">Créer une mission</button>
-</div>
-<div class="missions-list">
-  <nz-card *ngFor="let mission of filteredMissions" class="mission-card" nzHoverable (click)="openMissionDetail(mission)">
-    <nz-card-meta [nzTitle]="mission.titre" [nzDescription]="(mission.description | slice:0:100) + '...'"></nz-card-meta>
-    <div class="mission-info">
-      <p>Prix : {{ mission.prix }} €</p>
-      <p>Localisation : {{ mission.localisation }}</p>
-    </div>
-  </nz-card>
+<div class="missions-container">
+  <div class="missions-filters">
+    <nz-select
+      name="selectedCategories"
+      [(ngModel)]="selectedCategories"
+      (ngModelChange)="onCategoryChange($event)"
+      nzPlaceHolder="Filtrer par catégories"
+      [nzAllowClear]="true"
+      nzMode="multiple"
+      nzShowSearch
+      style="width: 100%;">
+      <nz-option *ngFor="let cat of categories" [nzValue]="cat" [nzLabel]="cat.label"></nz-option>
+    </nz-select>
+    <button nz-button nzType="primary" (click)="openCreateModal()">Créer une mission</button>
+  </div>
+  <div class="missions-table">
+    <nz-table [nzData]="filteredMissions" [nzLoading]="loading" nzBordered nzSize="middle">
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Prix</th>
+          <th>Localisation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mission of filteredMissions" (click)="openMissionDetail(mission)" style="cursor: pointer">
+          <td>{{ mission.titre }}</td>
+          <td>{{ mission.description | slice:0:100 }}...</td>
+          <td>{{ mission.prix }} €</td>
+          <td>{{ mission.localisation }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
 </div>
