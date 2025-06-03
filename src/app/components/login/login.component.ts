@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -9,7 +10,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule],
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
