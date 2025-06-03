@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment'; 
+import { Observable, Subject, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { MissionStatus } from '../../utils/mission-status'; 
 
 export interface Candidature {
   id: number;
@@ -55,8 +56,20 @@ export interface Mission {
 })
 export class MissionService {
   private apiUrl = environment.apiUrl + '/missions';
+  private workerSelectedSubject = new Subject<number>();
+  workerSelected$ = this.workerSelectedSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Initialiser l'observable
+  }
+
+  initWorkerSelectedObservable() {
+    // Cette méthode est appelée pour s'assurer que l'observable est initialisé
+  }
+
+  notifyWorkerSelected(missionId: number) {
+    this.workerSelectedSubject.next(missionId);
+  }
 
   getMissions(): Observable<Mission[]> {
     return this.http.get<Mission[]>(this.apiUrl);
@@ -90,7 +103,17 @@ export class MissionService {
     return this.http.get(`${this.apiUrl}/${missionId}/candidates`);
   }
 
+  finishMission(missionId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${missionId}`, {
+      statutMission: MissionStatus.TERMINATED
+    });
+  }
+
   acceptCandidate(missionId: number, candidateId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${missionId}/candidates/${candidateId}/accept`, {});
+    return this.http.post(`${this.apiUrl}/${missionId}/candidates/${candidateId}/accept`, {}).pipe(
+      tap(() => {
+        this.notifyWorkerSelected(missionId);
+      })
+    );
   }
 }

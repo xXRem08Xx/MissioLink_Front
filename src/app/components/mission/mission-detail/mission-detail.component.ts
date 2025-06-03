@@ -11,6 +11,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { MissionCandidatesComponent } from '../mission-candidates/mission-candidates.component';
 import { MissionEditComponent } from '../mission-edit/mission-edit.component';
+import { MissionStatus } from '../../../utils/mission-status';
 
 @Component({
   selector: 'app-mission-detail',
@@ -35,7 +36,10 @@ export class MissionDetailComponent implements OnInit, AfterViewInit {
     private message: NzMessageService,
     private modal: NzModalService,
     private router: Router
-  ) {}
+  ) {
+    // Initialiser l'observable pour la sélection du worker
+    this.missionService.initWorkerSelectedObservable();
+  }
 
   ngOnInit(): void {
     const authData = localStorage.getItem('authData');
@@ -59,6 +63,17 @@ export class MissionDetailComponent implements OnInit, AfterViewInit {
         }
       });
     }
+
+    // Souscrire aux changements de worker
+    this.missionService.workerSelected$.subscribe((missionId) => {
+      if (missionId === id) {
+        this.loading = true;
+        this.missionService.getMission(id).subscribe(data => {
+          this.mission = data;
+          this.loading = false;
+        });
+      }
+    });
   }
 
   ngAfterViewInit(): void {}
@@ -93,22 +108,74 @@ export class MissionDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
+  confirmFinish(): void {
+    this.modal.confirm({
+      nzTitle: 'Terminer la mission',
+      nzContent: 'Voulez-vous vraiment terminer cette mission ?',
+      nzOnOk: () => this.finishMission()
+    });
+  }
+
+  finishMission(): void {
+    const missionId = this.mission?.id;
+    if (!missionId) { return; }
+    this.missionService.finishMission(missionId).subscribe({
+      next: () => {
+        this.message.success('La mission a été terminée avec succès.');
+        this.loading = true;
+        this.missionService.getMission(missionId).subscribe({
+          next: (data) => {
+            this.mission = data;
+            this.loading = false;
+          },
+          error: (error: any) => {
+            this.message.error('Erreur lors de la mise à jour de la mission.');
+            this.loading = false;
+          }
+        });
+      },
+      error: (error: any) => {
+        this.message.error('Erreur lors de la fin de la mission.');
+      }
+    });
+  }
+
   cancelApplication(): void {
     if (!this.mission) { return; }
     if (this.isAcceptedCandidate) {
       this.message.error('Vous ne pouvez pas annuler votre candidature car vous êtes déjà accepté.');
       return;
     }
+    if (this.mission.statutMission?.label === 'Terminée') {
+      this.message.error('Cette mission est terminée et ne peut plus être modifiée.');
+      return;
+    }
     this.missionService.cancelApply(this.mission.id).subscribe(() => {
       this.message.success('Votre candidature a été annulée.');
       this.hasApplied = false;
     }, (error: any) => {
-      this.message.error('Erreur lors de l\'annulation.');
+      this.message.error('Erreur lors de l\'annulation de la candidature.');
     });
   }
 
   openEditModal(): void {
-    this.router.navigate(['/mission', this.mission?.id, 'edit'], { state: { mission: this.mission } });
+    if (this.mission?.statutMission?.label === 'Terminée') {
+      this.message.error('Cette mission est terminée et ne peut plus être modifiée.');
+      return;
+    }
+    const modalRef = this.modal.create({
+      nzTitle: 'Modifier la mission',
+      nzContent: MissionEditComponent,
+      nzFooter: null,
+      nzData: {
+        mission: this.mission
+      }
+    });
+    modalRef.afterClose.subscribe(result => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 
   openCandidatesModal(): void {
@@ -127,25 +194,28 @@ export class MissionDetailComponent implements OnInit, AfterViewInit {
   }
 
   confirmDelete(): void {
+    if (this.mission?.statutMission?.label === 'Terminée') {
+      this.message.error('Cette mission est terminée et ne peut plus être supprimée.');
+      return;
+    }
     this.modal.confirm({
       nzTitle: 'Supprimer la mission',
-      nzContent: 'Confirmez-vous la suppression de cette mission ? Cette action est irréversible.',
+      nzContent: 'Voulez-vous vraiment supprimer cette mission ?',
       nzOnOk: () => this.deleteMission()
     });
   }
 
   deleteMission(): void {
     if (!this.mission) { return; }
-    this.missionService.deleteMission(this.mission.id).subscribe(() => {
-      this.message.success('Mission supprimée.');
-      this.router.navigate(['/missions']);
-    }, (error: any) => {
-      this.message.error('Erreur lors de la suppression.');
+    this.missionService.deleteMission(this.mission.id).subscribe({
+      next: () => {
+        this.message.success('La mission a été supprimée avec succès.');
+        this.router.navigate(['/missions']);
+      },
+      error: (error: any) => {
+        this.message.error('Erreur lors de la suppression.');
+      }
     });
-  }
-
-  finishMission(): void {
-    this.message.success('Mission terminée.');
   }
 
   initMap(): void {

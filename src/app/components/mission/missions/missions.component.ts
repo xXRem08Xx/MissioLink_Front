@@ -10,6 +10,7 @@ import { MissionCreateComponent } from '../mission-create/mission-create.compone
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzModalWrapperModule } from '../../dependance/nzmodalservice.module';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { MissionStatus } from '../../../utils/mission-status';
 
 @Component({
   selector: 'app-missions',
@@ -42,7 +43,11 @@ export class MissionsComponent implements OnInit {
     }
     this.loading = true;
     this.missionService.getMissions().subscribe(data => {
-      this.missions = data.filter(m => !this.currentUserId || m.employer?.id !== this.currentUserId);
+      // Filtrer les missions qui ne sont pas terminées
+      this.missions = data.filter(m => 
+        m.statutMission?.label !== 'Terminée' && 
+        (!this.currentUserId || m.employer?.id !== this.currentUserId)
+      );
       this.filteredMissions = this.missions;
       this.loading = false;
     });
