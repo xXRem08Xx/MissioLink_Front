@@ -4,24 +4,13 @@
   padding: 16px;
 }
 
-.filter-column {
-  width: 250px;
-}
-
-.missions-column {
-  flex: 1;
+.missions-filters {
+  flex: 0 0 250px;
   display: flex;
   flex-direction: column;
-}
-
-.missions-list {
-  display: flex;
-  flex-wrap: wrap;
   gap: 16px;
-  justify-content: flex-start;
 }
 
-.mission-card {
-  width: 300px;
-  cursor: pointer;
+.missions-table {
+  flex: 1;
 }

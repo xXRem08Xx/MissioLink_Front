@@ -6,23 +6,28 @@
         <span class="app-name">MissioLink</span>
       </a>
       <ul nz-menu nzTheme="dark" nzMode="horizontal" class="nav-menu">
-        <li nz-menu-item routerLink="/dashboard" (click)="goToDashboard()">Dashboard</li>
-        <li nz-menu-item routerLink="/profile" (click)="goToProfile()">Profile</li>
-        <li nz-menu-item routerLink="/missions" (click)="goToMissions()">Missions</li>
+        <li nz-menu-item (click)="goToDashboard()" routerLink="/dashboard">
+          Dashboard
+        </li>
+        <li nz-menu-item (click)="goToProfile()" routerLink="/profile">
+          Profile
+        </li>
+        <li nz-menu-item (click)="goToMissions()" routerLink="/missions">
+          Missions
+        </li>
       </ul>
     </div>
     <div class="nav-right">
-      <!-- <nz-dropdown [nzDropdownMenu]="userMenu">
-        <nz-avatar nzSize="large" nzSrc="assets/images/avatar.png" nzStyle="cursor: pointer;"></nz-avatar>
-      </nz-dropdown> -->
-      <button nz-icon nzType="logout" style="margin-right:8px;" (click)="logout()"></button>Déconnexion
+      <app-logout></app-logout>
+
       <nz-dropdown-menu #userMenu="nzDropdownMenu">
         <ul nz-menu>
           <li nz-menu-item (click)="goToProfile()">
             <i nz-icon nzType="user" style="margin-right:8px;"></i>Profil
           </li>
-          <li nz-menu-item (click)="logout()">
-            <i nz-icon nzType="logout" style="margin-right:8px;"></i>Déconnexion
+          <li nz-menu-item>
+            <i nz-icon nzType="logout" style="margin-right:8px;"></i>
+            <app-logout></app-logout>
           </li>
         </ul>
       </nz-dropdown-menu>

@@ -1,22 +1,25 @@
-<form [formGroup]="editForm" (ngSubmit)="submit()">
-  <div class="form-group">
-    <label>Titre</label>
-    <input formControlName="titre" type="text" class="form-control">
-  </div>
-  <div class="form-group">
-    <label>Description</label>
-    <textarea formControlName="description" class="form-control"></textarea>
-  </div>
-  <div class="form-group">
-    <label>Prix</label>
-    <input formControlName="prix" type="number" class="form-control">
-  </div>
-  <div class="form-group">
-    <label>Localisation</label>
-    <input formControlName="localisation" type="text" class="form-control">
-  </div>
-  <div class="modal-buttons">
-    <button nz-button nzType="primary" type="submit">Enregistrer</button>
-    <button nz-button nzType="default" type="button" (click)="cancel()">Annuler</button>
-  </div>
-</form>
+<div class="mission-edit-container">
+  <h2>Modifier la mission</h2>
+  <form [formGroup]="editForm" (ngSubmit)="submit()">
+    <div class="form-group">
+      <label>Titre</label>
+      <input formControlName="titre" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea formControlName="description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Prix</label>
+      <input formControlName="prix" type="number" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Localisation</label>
+      <input formControlName="localisation" type="text" class="form-control">
+    </div>
+    <div class="buttons">
+      <button nz-button nzType="primary" type="submit" (click)="submit()">Enregistrer</button>
+      <button nz-button nzType="default" type="button" (click)="cancel()">Annuler</button>
+    </div>
+  </form>
+</div>

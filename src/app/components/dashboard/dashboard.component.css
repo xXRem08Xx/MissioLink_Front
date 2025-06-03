@@ -1,6 +1,49 @@
-.inner-content {
+.dashboard-container {
   padding: 24px;
+  background: #f0f2f5;
+}
+
+.left-column,
+.right-column {
   background: #fff;
-  min-height: 360px;
-  width: 100%;
+  padding: 16px;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+
+.missions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mission-card {
+  border: 2px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+/* Styles selon le statut */
+.mission-card.non-candidat {
+  border-color: #e8e8e8;
+}
+.mission-card.en-attente {
+  border-color: orange;
+}
+.mission-card.acceptee {
+  border-color: green;
+}
+.mission-card.refusee {
+  border-color: red;
+}
+
+.actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.status-label {
+  margin-top: 8px;
+  font-weight: bold;
 }

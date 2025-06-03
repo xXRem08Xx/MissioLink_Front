@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as L from 'leaflet';
 import { MissionService, Mission } from '../../../services/mission/mission.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { CommonModule } from '@angular/common';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { MissionEditComponent } from '../mission-edit/mission-edit.component';
 import { MissionCandidatesComponent } from '../mission-candidates/mission-candidates.component';
+import { MissionEditComponent } from '../mission-edit/mission-edit.component';
 
 @Component({
   selector: 'app-mission-detail',
@@ -17,11 +19,14 @@ import { MissionCandidatesComponent } from '../mission-candidates/mission-candid
   templateUrl: './mission-detail.component.html',
   styleUrls: ['./mission-detail.component.css']
 })
-export class MissionDetailComponent implements OnInit {
+export class MissionDetailComponent implements OnInit, AfterViewInit {
   mission: Mission | null = null;
   loading = false;
   currentUserId: number | null = null;
   hasApplied = false;
+  map!: L.Map;
+  marker!: L.Marker;
+  @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,9 +52,16 @@ export class MissionDetailComponent implements OnInit {
           this.hasApplied = this.mission.candidatures.some(c => c.user && c.user.id === this.currentUserId);
         }
         this.loading = false;
+        if (this.mission?.localisation && this.mission.latitude && this.mission.longitude) {
+          setTimeout(() => {
+            this.initMap();
+          }, 100);
+        }
       });
     }
   }
+
+  ngAfterViewInit(): void {}
 
   get isAcceptedCandidate(): boolean {
     return !!(this.mission?.worker && this.mission.worker.id === this.currentUserId);
@@ -96,18 +108,7 @@ export class MissionDetailComponent implements OnInit {
   }
 
   openEditModal(): void {
-    const modalRef = this.modal.create({
-      nzTitle: 'Modifier la mission',
-      nzContent: MissionEditComponent,
-      nzData: { mission: this.mission },
-      nzFooter: null
-    });
-    modalRef.afterClose.subscribe(result => {
-      if (result) {
-        this.mission = result;
-        this.message.success('Mission mise à jour.');
-      }
-    });
+    this.router.navigate(['/mission', this.mission?.id, 'edit'], { state: { mission: this.mission } });
   }
 
   openCandidatesModal(): void {
@@ -145,5 +146,27 @@ export class MissionDetailComponent implements OnInit {
 
   finishMission(): void {
     this.message.success('Mission terminée.');
+  }
+
+  initMap(): void {
+    const lat = this.mission?.latitude;
+    const lng = this.mission?.longitude;
+    if (lat && lng && this.mapContainer) {
+      this.map = L.map(this.mapContainer.nativeElement).setView([lat, lng], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(this.map);
+      const customIcon = L.icon({
+        iconUrl: '/assets/pointeur.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -38]
+      });
+      this.marker = L.marker([lat, lng], { icon: customIcon }).addTo(this.map);
+      this.marker.bindPopup(this.mission?.localisation || 'Emplacement').openPopup();
+      setTimeout(() => {
+        this.map.invalidateSize();
+      }, 100);
+    }
   }
 }

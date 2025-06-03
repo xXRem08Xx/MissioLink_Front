@@ -1,7 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment'; 
+
+export interface Candidature {
+  id: number;
+  dateSoumission: string;
+  dateDecision: string;
+  user: {
+    id: number;
+    nom: string;
+    prenom: string;
+    email?: string;
+  };
+  statutCandidature: {
+    label: string;
+  };
+}
 
 export interface Mission {
   id: number;
@@ -9,10 +24,30 @@ export interface Mission {
   description: string;
   prix: number;
   localisation: string;
-  employer?: { id: number; email: string; nom: string; prenom: string; telephone?: string; adresse?: string };
-  candidatures?: Array<{ id: number; user: { id: number } }>;
-  categories?: Array<{ label: string }>;
-  worker?: { id: number; email: string; nom: string; prenom: string; telephone?: string; adresse?: string };
+  latitude: number;
+  longitude: number;
+  employer?: {
+    id: number;
+    nom: string;
+    prenom: string;
+    email?: string;
+    telephone?: string;
+    adresse?: string;
+  };
+  worker?: {
+    id: number;
+    nom: string;
+    prenom: string;
+    email?: string;
+  };
+  categories?: Array<{
+    id: number;
+    label: string;
+  }>;
+  statutMission?: {
+    label: string;
+  };
+  candidatures?: Candidature[];
 }
 
 @Injectable({
@@ -29,6 +64,10 @@ export class MissionService {
 
   getMission(id: number): Observable<Mission> {
     return this.http.get<Mission>(`${this.apiUrl}/${id}`);
+  }
+
+  create(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
   }
 
   apply(missionId: number): Observable<any> {
@@ -54,8 +93,4 @@ export class MissionService {
   acceptCandidate(missionId: number, candidateId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/${missionId}/candidates/${candidateId}/accept`, {});
   }
-
-  finishMission(missionId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${missionId}/finish`, {});
-  }  
 }

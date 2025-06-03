@@ -12,6 +12,9 @@
       <div class="info-box">
         <h3>Localisation</h3>
         <p>{{ mission.localisation }}</p>
+        <div *ngIf="mission.localisation && mission.latitude && mission.longitude">
+          <div id="map" #mapContainer style="height: 300px;"></div>
+        </div>
       </div>
     </div>
     <div *ngIf="mission.employer">
@@ -28,7 +31,6 @@
         </div>
       </div>
     </div>
-    <!-- Partie pour le propriétaire -->
     <div class="action-buttons" *ngIf="mission.employer?.id === currentUserId">
       <ng-container *ngIf="isAcceptedCandidate; else candidateActions">
         <div class="worker-info">
@@ -43,7 +45,6 @@
         <button nz-button nzType="default" (click)="openCandidatesModal()">Choisir un travailleur</button>
       </ng-template>
     </div>
-    <!-- Partie pour les candidats non-propriétaires -->
     <div class="action-buttons" *ngIf="mission.employer?.id !== currentUserId">
       <ng-container *ngIf="isAcceptedCandidate && mission.worker?.id === currentUserId; else notChosen">
         <p class="info-message">

@@ -1,2 +1,59 @@
-<h1>Bienvenue sur votre dashboard</h1>
-<p>Ceci est le dashboard.</p>
+<nz-row nzGutter="24" class="dashboard-container">
+  <!-- Colonne Missions créées -->
+  <nz-col [nzSpan]="24" [nzMd]="12">
+    <nz-card nzTitle="Missions créées" class="left-column">
+      <ng-container *ngIf="loading">
+        <nz-spin nzTip="Chargement..."></nz-spin>
+      </ng-container>
+      <ng-container *ngIf="!loading && createdMissions.length === 0">
+        <p>Aucune mission créée.</p>
+      </ng-container>
+      <div class="missions-list" *ngIf="!loading">
+        <nz-card
+          *ngFor="let mission of createdMissions"
+          class="mission-card non-candidat"
+          [nzBordered]="true">
+          <nz-card-meta
+            [nzTitle]="mission.titre"
+            [nzDescription]="(mission.description | slice:0:100) + '...'">
+          </nz-card-meta>
+          <div class="actions">
+            <button nz-button nzType="default" (click)="viewMissionDetail(mission)">Détails</button>
+            <button nz-button nzType="primary" (click)="editMission(mission)">Modifier</button>
+            <button nz-button nzType="default" (click)="deleteMission(mission)">Supprimer</button>
+          </div>
+        </nz-card>
+      </div>
+    </nz-card>
+  </nz-col>
+
+  <!-- Colonne Missions auxquelles j'ai postulé -->
+  <nz-col [nzSpan]="24" [nzMd]="12">
+    <nz-card nzTitle="Missions auxquelles j'ai postulé" class="right-column">
+      <ng-container *ngIf="loading">
+        <nz-spin nzTip="Chargement..."></nz-spin>
+      </ng-container>
+      <ng-container *ngIf="!loading && candidateMissions.length === 0">
+        <p>Vous n'avez postulé à aucune mission.</p>
+      </ng-container>
+      <div class="missions-list" *ngIf="!loading">
+        <nz-card
+          *ngFor="let mission of candidateMissions"
+          class="mission-card"
+          [ngClass]="getCandidateStatusClass(mission)"
+          [nzBordered]="true">
+          <nz-card-meta
+            [nzTitle]="mission.titre"
+            [nzDescription]="(mission.description | slice:0:100) + '...'">
+          </nz-card-meta>
+          <div class="actions">
+            <button nz-button nzType="default" (click)="viewMissionDetail(mission)">Détails</button>
+          </div>
+          <div class="status-label">
+            Statut: {{ getCandidateStatus(mission) }}
+          </div>
+        </nz-card>
+      </div>
+    </nz-card>
+  </nz-col>
+</nz-row>
