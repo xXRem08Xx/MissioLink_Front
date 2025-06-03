@@ -1,6 +1,74 @@
-# Test
+# MissioLink_Front
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
+
+## Description
+MissioLink_Front est une application web développée avec Angular et Capacitor, qui permet une expérience multiplateforme (web et mobile).
+
+## Technologies utilisées
+- Angular 19.1.0
+- Capacitor 7.2.0 (pour le support mobile)
+- Ng-Zorro Ant Design (UI Framework)
+- Leaflet (pour la cartographie)
+
+## Installation
+
+1. Clonez le dépôt
+2. Installez les dépendances :
+```bash
+npm install
+```
+
+## Démarrage
+
+Pour lancer l'application en mode développement :
+```bash
+npm run start
+```
+
+Pour construire l'application en production :
+```bash
+npm run build
+```
+
+## Tests
+Pour exécuter les tests unitaires :
+```bash
+npm run test
+```
+
+## Déploiement Android
+1. Assurez-vous d'avoir Android Studio et les outils de développement Android installés
+2. Construisez l'application pour Android :
+```bash
+npx cap sync android
+npx cap open android
+```
+
+## Structure du projet
+- `/src` : Source principale de l'application Angular
+- `/android` : Configuration Capacitor pour Android
+- `/public` : Assets publics
+- `/node_modules` : Dépendances npm
+
+## Scripts disponibles
+- `ng serve` : Lance le serveur de développement
+- `ng build` : Construit l'application
+- `ng test` : Exécute les tests
+- `ng watch` : Lance la compilation en mode watch
+
+## Requis
+- Node.js (version compatible avec Angular 19)
+- npm
+- Angular CLI
+- Capacitor CLI
+- Android Studio (pour le développement Android)
+
+## License
+MIT
+
+## Contributing
+Les contributions sont les bienvenues ! Veuillez lire le guide de contribution avant de soumettre une pull request.
 
 ## Development server
 
