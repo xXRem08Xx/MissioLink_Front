@@ -5,7 +5,21 @@
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
         <span class="app-name">MissioLink</span>
       </a>
-      <ul nz-menu nzTheme="dark" nzMode="horizontal" class="nav-menu">
+      <button
+        class="menu-toggle"
+        nz-button
+        nzType="text"
+        (click)="toggleMenu()"
+      >
+        <i nz-icon nzType="menu"></i>
+      </button>
+      <ul
+        nz-menu
+        nzTheme="dark"
+        nzMode="horizontal"
+        class="nav-menu"
+        [class.open]="isMenuOpen"
+      >
         <li nz-menu-item (click)="goToDashboard()" routerLink="/dashboard">
           Dashboard
         </li>
