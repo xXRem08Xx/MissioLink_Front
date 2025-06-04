@@ -16,6 +16,7 @@ html, body {
   align-items: center;
   background: #001529;
   padding: 0 24px;
+  position: relative;
 }
 
 .nav-left {
@@ -45,6 +46,15 @@ html, body {
   line-height: 64px;
 }
 
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .nav-right {
   display: flex;
   align-items: center;
@@ -59,4 +69,24 @@ html, body {
   background: #fff;
   padding: 24px;
   min-height: calc(100vh - 64px);
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: #001529;
+    flex-direction: column;
+  }
+
+  .nav-menu.open {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
 }

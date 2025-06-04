@@ -17,7 +17,11 @@ import { LogoutComponent } from '../../components/logout/logout.component';
   styleUrls: ['./nav-layout.component.css']
 })
 export class NavLayoutComponent {
+  isMenuOpen = false;
   constructor(private router: Router, private authService: AuthService) {}
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
   goToProfile(): void {
     this.router.navigate(['/profile']);
   }
