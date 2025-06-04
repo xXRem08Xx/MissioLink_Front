@@ -22,10 +22,12 @@
     "@capacitor/cli": "^7.2.0",
     "@capacitor/core": "^7.2.0",
     "leaflet": "^1.9.4",
-    "ng-zorro-antd": "^19.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.15.0",
+    "@angular/material": "^19.2.7",
+    "@angular/cdk": "^19.2.7",
+    "ng-zorro-antd": "^19.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.5",

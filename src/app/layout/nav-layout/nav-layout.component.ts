@@ -1,18 +1,17 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { LogoutComponent } from '../../components/logout/logout.component';
 
 @Component({
   selector: 'app-nav-layout',
   standalone: true,
-  imports: [NzDropDownModule, CommonModule, RouterOutlet, NzLayoutModule, NzMenuModule, NzAvatarModule, NzIconModule, LogoutComponent],
+  imports: [CommonModule, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, LogoutComponent],
   templateUrl: './nav-layout.component.html',
   styleUrls: ['./nav-layout.component.css']
 })

@@ -30,18 +30,9 @@
   text-decoration: underline;
 }
 
-.nz-form-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
+.full-width {
+  width: 100%;
 }
-
-.nz-form-label {
-  width: 120px;
-  text-align: right;
-  margin-right: 10px;
-}
-
-.nz-form-control {
-  flex: 1;
+.mr {
+  margin-right: 8px;
 }
