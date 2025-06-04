@@ -32,7 +32,7 @@
       <ng-container *ngIf="mission.worker; else candidateActions">
         <div class="worker-info">
           <h3>Travailleur sélectionné :</h3>
-          <p>{{ mission.worker?.nom }} {{ mission.worker?.prenom }} - {{ mission.worker?.email }}</p>
+          <p>{{ mission.worker.nom }} {{ mission.worker.prenom }} - {{ mission.worker.email }}</p>
         </div>
         <button nz-button nzType="primary" (click)="finishMission()" [disabled]="mission.statutMission?.label === 'Terminée'">Terminer la tâche</button>
       </ng-container>
