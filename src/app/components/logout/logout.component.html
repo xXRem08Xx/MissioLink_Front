@@ -1,9 +1,4 @@
-<button
-  nz-button
-  nzType="text"
-  (click)="logout()"
-  class="logout-btn"
->
-  <i nz-icon nzType="logout" style="margin-right:8px;"></i>
-  Déconnexion
+<button mat-button color="accent" (click)="logout()" class="logout-btn">
+  <mat-icon>logout</mat-icon>
+  <span class="hide-sm">Déconnexion</span>
 </button>

@@ -7,19 +7,9 @@ html, body {
 
 .app-layout {
   min-height: 100vh;
-  min-width: 100vw;
 }
 
 .app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #001529;
-  padding: 0 24px;
-  position: relative;
-}
-
-.nav-left {
   display: flex;
   align-items: center;
 }
@@ -29,7 +19,7 @@ html, body {
   align-items: center;
   text-decoration: none;
   color: #fff;
-  margin-right: 24px;
+  cursor: pointer;
 }
 
 .logo img {
@@ -42,22 +32,12 @@ html, body {
   font-size: 20px;
 }
 
-.nav-menu {
-  line-height: 64px;
-}
-
 .menu-toggle {
   display: none;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
 }
 
-.nav-right {
-  display: flex;
-  align-items: center;
+.spacer {
+  flex: 1 1 auto;
 }
 
 .app-content {
@@ -65,28 +45,12 @@ html, body {
   background: #f0f2f5;
 }
 
-.inner-content {
-  background: #fff;
-  padding: 24px;
-  min-height: calc(100vh - 64px);
+.side-menu {
+  width: 200px;
 }
 
 @media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-    position: absolute;
-    top: 64px;
-    left: 0;
-    right: 0;
-    background: #001529;
-    flex-direction: column;
-  }
-
-  .nav-menu.open {
-    display: flex;
-  }
-
   .menu-toggle {
-    display: block;
+    display: inline-flex;
   }
 }

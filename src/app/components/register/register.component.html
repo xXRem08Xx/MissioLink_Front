@@ -1,44 +1,40 @@
 <div class="form-container">
-  <form nz-form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <nz-form-item>
-      <nz-form-label nzFor="email">Email</nz-form-label>
-      <nz-form-control>
-        <input nz-input formControlName="email" id="email" placeholder="Votre email" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="password">Mot de passe</nz-form-label>
-      <nz-form-control>
-        <input nz-input type="password" formControlName="password" id="password" placeholder="Votre mot de passe" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="nom">Nom</nz-form-label>
-      <nz-form-control>
-        <input nz-input formControlName="nom" id="nom" placeholder="Votre nom" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="prenom">Prénom</nz-form-label>
-      <nz-form-control>
-        <input nz-input formControlName="prenom" id="prenom" placeholder="Votre prénom" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="telephone">Téléphone</nz-form-label>
-      <nz-form-control>
-        <input nz-input formControlName="telephone" id="telephone" placeholder="Votre téléphone" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="adresse">Adresse</nz-form-label>
-      <nz-form-control>
-        <input nz-input formControlName="adresse" id="adresse" placeholder="Votre adresse" />
-      </nz-form-control>
-    </nz-form-item>
-    <button nz-button nzType="primary" type="submit">S'inscrire</button>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" id="email" placeholder="Votre email" required email>
+      <mat-error *ngIf="registerForm.get('email')?.hasError('required')">Email requis</mat-error>
+      <mat-error *ngIf="registerForm.get('email')?.hasError('email')">Email invalide</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" formControlName="password" id="password" placeholder="Votre mot de passe" required>
+      <mat-error *ngIf="registerForm.get('password')?.hasError('required')">Mot de passe requis</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="nom" id="nom" placeholder="Votre nom" required>
+      <mat-error *ngIf="registerForm.get('nom')?.hasError('required')">Champ requis</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="prenom" id="prenom" placeholder="Votre prénom" required>
+      <mat-error *ngIf="registerForm.get('prenom')?.hasError('required')">Champ requis</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="telephone" id="telephone" placeholder="Votre téléphone">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Adresse</mat-label>
+      <input matInput formControlName="adresse" id="adresse" placeholder="Votre adresse">
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      <mat-icon>person_add</mat-icon>
+      <span>S'inscrire</span>
+    </button>
   </form>
-    <div class="link-container">
-      <p>Déjà inscrit ? <a routerLink="../login">Connectez-vous ici</a></p>
-    </div>
+  <div class="link-container">
+    <p>Déjà inscrit ? <a routerLink="../login">Connectez-vous ici</a></p>
+  </div>
 </div>

@@ -1,55 +1,28 @@
-<nz-layout class="app-layout">
-  <nz-header class="app-header">
-    <div class="nav-left">
-      <a routerLink="/dashboard" class="logo">
-        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
-        <span class="app-name">MissioLink</span>
-      </a>
-      <button
-        class="menu-toggle"
-        nz-button
-        nzType="text"
-        (click)="toggleMenu()"
-      >
-        <i nz-icon nzType="menu"></i>
-      </button>
-      <ul
-        nz-menu
-        nzTheme="dark"
-        nzMode="horizontal"
-        class="nav-menu"
-        [class.open]="isMenuOpen"
-      >
-        <li nz-menu-item (click)="goToDashboard()" routerLink="/dashboard">
-          Dashboard
-        </li>
-        <li nz-menu-item (click)="goToProfile()" routerLink="/profile">
-          Profile
-        </li>
-        <li nz-menu-item (click)="goToMissions()" routerLink="/missions">
-          Missions
-        </li>
-      </ul>
-    </div>
-    <div class="nav-right">
-      <app-logout></app-logout>
+<mat-sidenav-container class="app-layout">
+  <mat-sidenav #drawer class="side-menu" mode="over">
+    <mat-nav-list>
+      <a mat-list-item (click)="goToDashboard(); drawer.close()">Dashboard</a>
+      <a mat-list-item (click)="goToProfile(); drawer.close()">Profile</a>
+      <a mat-list-item (click)="goToMissions(); drawer.close()">Missions</a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-      <nz-dropdown-menu #userMenu="nzDropdownMenu">
-        <ul nz-menu>
-          <li nz-menu-item (click)="goToProfile()">
-            <i nz-icon nzType="user" style="margin-right:8px;"></i>Profil
-          </li>
-          <li nz-menu-item>
-            <i nz-icon nzType="logout" style="margin-right:8px;"></i>
-            <app-logout></app-logout>
-          </li>
-        </ul>
-      </nz-dropdown-menu>
-    </div>
-  </nz-header>
-  <nz-content class="app-content">
-    <div class="inner-content">
-      <router-outlet></router-outlet>
-    </div>
-  </nz-content>
-</nz-layout>
+  <mat-toolbar color="primary" class="app-header">
+    <button mat-icon-button class="menu-toggle" (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="logo" (click)="goToDashboard()">
+      <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
+      <span class="app-name">MissioLink</span>
+    </span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="goToProfile()">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <app-logout></app-logout>
+  </mat-toolbar>
+
+  <div class="app-content">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>

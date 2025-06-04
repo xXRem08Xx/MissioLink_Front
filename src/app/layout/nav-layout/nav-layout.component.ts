@@ -1,27 +1,23 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
 import { LogoutComponent } from '../../components/logout/logout.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-nav-layout',
   standalone: true,
-  imports: [NzDropDownModule, CommonModule, RouterOutlet, NzLayoutModule, NzMenuModule, NzAvatarModule, NzIconModule, LogoutComponent],
+  imports: [CommonModule, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule, LogoutComponent],
   templateUrl: './nav-layout.component.html',
   styleUrls: ['./nav-layout.component.css']
 })
 export class NavLayoutComponent {
-  isMenuOpen = false;
   constructor(private router: Router, private authService: AuthService) {}
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
   goToProfile(): void {
     this.router.navigate(['/profile']);
   }
