@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-logout',
   standalone: true,
-  imports: [NzButtonModule, NzIconModule],
+  imports: [MatButtonModule, MatIconModule],
   templateUrl: './logout.component.html',
   styleUrls: ['./logout.component.css'],
 })

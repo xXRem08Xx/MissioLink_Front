@@ -1,5 +1,4 @@
 .logout-btn {
-  color: #fff;
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -9,4 +8,8 @@
 
 .logout-btn:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.mr {
+  margin-right: 8px;
 }
