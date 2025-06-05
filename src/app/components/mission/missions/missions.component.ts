@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AuthService } from '../../../services/auth/auth.service';
 import { CategoryService, Category } from '../../../services/category/category.service';
 import { CommonModule } from '@angular/common';
@@ -12,12 +13,20 @@ import { MissionCreateComponent } from '../mission-create/mission-create.compone
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzModalWrapperModule } from '../../dependance/nzmodalservice.module';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { MissionStatus } from '../../../utils/mission-status';
 
 @Component({
   selector: 'app-missions',
   standalone: true,
-  imports: [CommonModule, NzTableModule, NzSelectModule, FormsModule, NzModalWrapperModule, NzInputModule, NzCheckboxModule],
+  imports: [
+    CommonModule,
+    NzTableModule,
+    NzSelectModule,
+    FormsModule,
+    NzModalWrapperModule,
+    NzInputModule,
+    NzCheckboxModule,
+    NzButtonModule
+  ],
   templateUrl: './missions.component.html',
   styleUrls: ['./missions.component.css']
 })
@@ -81,11 +90,24 @@ export class MissionsComponent implements OnInit {
     });
   }
 
+  toggleMyMissions(): void {
+    this.showMyMissions = !this.showMyMissions;
+    this.applyFilters();
+  }
+
   applyFilters(): void {
     let result = this.missions;
 
-    if (!this.showMyMissions && this.currentUserId) {
-      result = result.filter(m => m.employer?.id !== this.currentUserId);
+    if (this.currentUserId) {
+      if (this.showMyMissions) {
+        result = result.filter(m =>
+          m.employer?.id === this.currentUserId ||
+          (m.candidatures && m.candidatures.some(c => c.user && c.user.id === this.currentUserId)) ||
+          (m.worker && m.worker.id === this.currentUserId)
+        );
+      } else {
+        result = result.filter(m => m.employer?.id !== this.currentUserId);
+      }
     }
 
     if (this.selectedCategories && this.selectedCategories.length > 0) {
