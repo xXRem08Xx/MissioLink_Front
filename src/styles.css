@@ -1,13 +1,1 @@
 /* You can add global styles to this file, and also import other style files */
-
-/* Ensure cards remain readable on small screens */
-.custom-card {
-  min-width: 320px;
-}
-
-@media (max-width: 576px) {
-  .custom-card {
-    font-size: 0.9rem;
-    padding: 1rem !important;
-  }
-}
