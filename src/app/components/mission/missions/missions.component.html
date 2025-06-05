@@ -16,9 +16,9 @@
       <input nz-input type="number" placeholder="Prix min" [(ngModel)]="priceMin" (ngModelChange)="applyFilters()" />
       <input nz-input type="number" placeholder="Prix max" [(ngModel)]="priceMax" (ngModelChange)="applyFilters()" class="ms-2" />
     </div>
-    <label class="mt-2">
-      <input nz-checkbox [(ngModel)]="showMyMissions" (ngModelChange)="applyFilters()" /> Voir mes missions
-    </label>
+    <button nz-button nzType="default" (click)="toggleMyMissions()" class="mt-2">
+      {{ showMyMissions ? 'Voir toutes les missions' : 'Voir mes missions' }}
+    </button>
     <button nz-button nzType="primary" (click)="openCreateModal()" class="mt-2">Créer une mission</button>
   </div>
   <div class="missions-table">
