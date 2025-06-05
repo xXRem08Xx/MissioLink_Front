@@ -10,19 +10,6 @@ html, body {
   min-width: 100vw;
 }
 
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #001529;
-  padding: 0 24px;
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-}
-
 .logo {
   display: flex;
   align-items: center;
@@ -41,14 +28,6 @@ html, body {
   font-size: 20px;
 }
 
-.nav-menu {
-  line-height: 64px;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-}
 
 .app-content {
   padding: 24px;

@@ -1,16 +1,7 @@
 .missions-container {
-  display: flex;
-  gap: 16px;
   padding: 16px;
 }
 
 .missions-filters {
-  flex: 0 0 250px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.missions-table {
-  flex: 1;
+  margin-bottom: 16px;
 }

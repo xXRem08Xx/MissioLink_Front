@@ -1,7 +1,8 @@
-<nz-row nzGutter="24" class="dashboard-container">
-  <!-- Colonne Missions créées -->
-  <nz-col [nzSpan]="24" [nzMd]="12">
-    <nz-card nzTitle="Missions créées" class="left-column">
+<div class="container dashboard-container">
+  <div class="row g-4">
+    <!-- Colonne Missions créées -->
+    <div class="col-12 col-md-6">
+      <nz-card nzTitle="Missions créées" class="left-column">
       <ng-container *ngIf="loading">
         <nz-spin nzTip="Chargement..."></nz-spin>
       </ng-container>
@@ -24,12 +25,12 @@
           </div>
         </nz-card>
       </div>
-    </nz-card>
-  </nz-col>
+      </nz-card>
+    </div>
 
-  <!-- Colonne Missions auxquelles j'ai postulé -->
-  <nz-col [nzSpan]="24" [nzMd]="12">
-    <nz-card nzTitle="Missions auxquelles j'ai postulé" class="right-column">
+    <!-- Colonne Missions auxquelles j'ai postulé -->
+    <div class="col-12 col-md-6">
+      <nz-card nzTitle="Missions auxquelles j'ai postulé" class="right-column">
       <ng-container *ngIf="loading">
         <nz-spin nzTip="Chargement..."></nz-spin>
       </ng-container>
@@ -54,6 +55,7 @@
           </div>
         </nz-card>
       </div>
-    </nz-card>
-  </nz-col>
-</nz-row>
+      </nz-card>
+    </div>
+  </div>
+</div>
