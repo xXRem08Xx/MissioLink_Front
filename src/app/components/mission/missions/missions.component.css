@@ -5,3 +5,7 @@
 .missions-filters {
   margin-bottom: 16px;
 }
+
+.price-filters input {
+  width: 100px;
+}
