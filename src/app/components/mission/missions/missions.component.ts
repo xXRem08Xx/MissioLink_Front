@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MissionService, Mission } from '../../../services/mission/mission.service';
 import { Router } from '@angular/router';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AuthService } from '../../../services/auth/auth.service';
 import { CategoryService, Category } from '../../../services/category/category.service';
 import { CommonModule } from '@angular/common';
@@ -10,12 +13,20 @@ import { MissionCreateComponent } from '../mission-create/mission-create.compone
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzModalWrapperModule } from '../../dependance/nzmodalservice.module';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { MissionStatus } from '../../../utils/mission-status';
 
 @Component({
   selector: 'app-missions',
   standalone: true,
-  imports: [CommonModule, NzTableModule, NzSelectModule, FormsModule, NzModalWrapperModule],
+  imports: [
+    CommonModule,
+    NzTableModule,
+    NzSelectModule,
+    FormsModule,
+    NzModalWrapperModule,
+    NzInputModule,
+    NzCheckboxModule,
+    NzButtonModule
+  ],
   templateUrl: './missions.component.html',
   styleUrls: ['./missions.component.css']
 })
@@ -24,6 +35,10 @@ export class MissionsComponent implements OnInit {
   filteredMissions: Mission[] = [];
   categories: Category[] = [];
   selectedCategories: Category[] = [];
+  searchText = '';
+  priceMin: number | null = null;
+  priceMax: number | null = null;
+  showMyMissions = false;
   currentUserId: number | null = null;
   loading = false;
 
@@ -43,12 +58,9 @@ export class MissionsComponent implements OnInit {
     }
     this.loading = true;
     this.missionService.getMissions().subscribe(data => {
-      // Filtrer les missions qui ne sont pas terminées
-      this.missions = data.filter(m => 
-        m.statutMission?.label !== 'Terminée' && 
-        (!this.currentUserId || m.employer?.id !== this.currentUserId)
-      );
-      this.filteredMissions = this.missions;
+      // Conserver uniquement les missions non terminées
+      this.missions = data.filter(m => m.statutMission?.label !== 'Terminée');
+      this.applyFilters();
       this.loading = false;
     });
     this.categoryService.getCategories().subscribe(data => {
@@ -58,9 +70,7 @@ export class MissionsComponent implements OnInit {
 
   onCategoryChange(values: Category[]): void {
     this.selectedCategories = values;
-    this.filteredMissions = values && values.length > 0
-      ? this.missions.filter(m => m.categories && m.categories.some(c => values.some(v => v.label === c.label)))
-      : this.missions;
+    this.applyFilters();
   }
 
   openMissionDetail(mission: Mission): void {
@@ -78,5 +88,49 @@ export class MissionsComponent implements OnInit {
         this.ngOnInit();
       }
     });
+  }
+
+  toggleMyMissions(): void {
+    this.showMyMissions = !this.showMyMissions;
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    let result = this.missions;
+
+    if (this.currentUserId) {
+      if (this.showMyMissions) {
+        result = result.filter(m =>
+          m.employer?.id === this.currentUserId ||
+          (m.candidatures && m.candidatures.some(c => c.user && c.user.id === this.currentUserId)) ||
+          (m.worker && m.worker.id === this.currentUserId)
+        );
+      } else {
+        result = result.filter(m => m.employer?.id !== this.currentUserId);
+      }
+    }
+
+    if (this.selectedCategories && this.selectedCategories.length > 0) {
+      result = result.filter(m =>
+        m.categories && m.categories.some(c => this.selectedCategories.some(v => v.label === c.label))
+      );
+    }
+
+    if (this.searchText.trim()) {
+      const term = this.searchText.toLowerCase();
+      result = result.filter(m =>
+        m.titre.toLowerCase().includes(term) ||
+        m.description.toLowerCase().includes(term)
+      );
+    }
+
+    if (this.priceMin !== null) {
+      result = result.filter(m => m.prix >= this.priceMin!);
+    }
+    if (this.priceMax !== null) {
+      result = result.filter(m => m.prix <= this.priceMax!);
+    }
+
+    this.filteredMissions = result;
   }
 }
