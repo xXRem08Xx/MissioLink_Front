@@ -17,6 +17,7 @@ import { LogoutComponent } from '../../components/logout/logout.component';
   styleUrls: ['./nav-layout.component.css']
 })
 export class NavLayoutComponent {
+  isCollapsed = true;
   constructor(private router: Router, private authService: AuthService) {}
   goToProfile(): void {
     this.router.navigate(['/profile']);
