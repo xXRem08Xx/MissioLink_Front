@@ -7,41 +7,6 @@
   background-color: #f0f2f5;
 }
 
-.form-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background: #fff;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.link-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.link-container a {
-  color: #1890ff;
-  text-decoration: none;
-}
-
-.link-container a:hover {
-  text-decoration: underline;
-}
-
-.nz-form-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.nz-form-label {
-  width: 120px;
-  text-align: right;
-  margin-right: 10px;
-}
-
-.nz-form-control {
-  flex: 1;
+.card {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

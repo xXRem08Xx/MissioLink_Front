@@ -1,5 +1,5 @@
-<div class="missions-container">
-  <div class="missions-filters">
+<div class="container missions-container">
+  <div class="missions-filters mb-3">
     <nz-select
       name="selectedCategories"
       [(ngModel)]="selectedCategories"
@@ -11,7 +11,15 @@
       style="width: 100%;">
       <nz-option *ngFor="let cat of categories" [nzValue]="cat" [nzLabel]="cat.label"></nz-option>
     </nz-select>
-    <button nz-button nzType="primary" (click)="openCreateModal()">Créer une mission</button>
+    <input nz-input placeholder="Rechercher" [(ngModel)]="searchText" (ngModelChange)="applyFilters()" class="mt-2" />
+    <div class="price-filters mt-2">
+      <input nz-input type="number" placeholder="Prix min" [(ngModel)]="priceMin" (ngModelChange)="applyFilters()" />
+      <input nz-input type="number" placeholder="Prix max" [(ngModel)]="priceMax" (ngModelChange)="applyFilters()" class="ms-2" />
+    </div>
+    <button nz-button nzType="default" (click)="toggleMyMissions()" class="mt-2">
+      {{ showMyMissions ? 'Voir toutes les missions' : 'Voir mes missions' }}
+    </button>
+    <button nz-button nzType="primary" (click)="openCreateModal()" class="mt-2">Créer une mission</button>
   </div>
   <div class="missions-table">
     <nz-table [nzData]="filteredMissions" [nzLoading]="loading" nzBordered nzSize="middle">

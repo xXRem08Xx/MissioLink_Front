@@ -1,20 +1,46 @@
-<div class="form-container">
-  <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <nz-form-item>
-      <nz-form-label nzFor="email">Email</nz-form-label>
-      <nz-form-control>
-        <input nz-input formControlName="email" id="email" placeholder="Votre email" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="password">Mot de passe</nz-form-label>
-      <nz-form-control>
-        <input nz-input type="password" formControlName="password" id="password" placeholder="Votre mot de passe" />
-      </nz-form-control>
-    </nz-form-item>
-    <button nz-button nzType="primary" type="submit">Se connecter</button>
-  </form>
-    <div class="link-container">
-      <p>Pas encore de compte ? <a routerLink="../register">Inscrivez-vous ici</a></p>
+<div *ngIf="errorMessage" class="alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3" role="alert">
+  {{ errorMessage }}
+</div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="card p-4">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="Votre email"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="Votre mot de passe"
+          />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary w-100 d-flex justify-content-center align-items-center"
+          [disabled]="loading || loginForm.invalid"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Se connecter
+        </button>
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            Pas encore de compte ?
+            <a routerLink="../register">Inscrivez-vous ici</a>
+          </p>
+        </div>
+      </form>
     </div>
+  </div>
 </div>

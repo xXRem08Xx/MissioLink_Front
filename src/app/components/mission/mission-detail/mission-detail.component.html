@@ -1,4 +1,5 @@
-<nz-card *ngIf="mission" [nzTitle]="mission.titre" [nzLoading]="loading">
+<div class="container py-3" *ngIf="mission">
+  <nz-card [nzTitle]="mission.titre" [nzLoading]="loading" class="mb-3">
   <div class="mission-detail">
     <div class="mission-info">
       <div class="info-box">
@@ -58,4 +59,5 @@
       </ng-template>
     </div>
   </div>
-</nz-card>
+  </nz-card>
+</div>
