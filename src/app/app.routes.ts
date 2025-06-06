@@ -23,5 +23,6 @@ export const routes: Routes = [
     path: '',
     loadChildren: () => import('./layout/auth-layout/auth-layout.routes').then(m => m.AUTH_LAYOUT_ROUTES),
     canActivate: [NoAuthGuard]
-  }
+  },
+  { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
