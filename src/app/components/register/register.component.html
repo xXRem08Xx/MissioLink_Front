@@ -1,3 +1,8 @@
+<!-- register.component.html -->
+<div *ngIf="errorMessage" class="alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3" role="alert">
+  {{ errorMessage }}
+</div>
+
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
@@ -26,7 +31,10 @@
           <label for="adresse" class="form-label">Adresse</label>
           <input id="adresse" type="text" class="form-control" formControlName="adresse" placeholder="Votre adresse" />
         </div>
-        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+        <button type="submit" class="btn btn-primary w-100 d-flex justify-content-center align-items-center" [disabled]="loading || registerForm.invalid">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          S'inscrire
+        </button>
         <div class="text-center mt-3">
           <p class="mb-0">Déjà inscrit ? <a routerLink="../login">Connectez-vous ici</a></p>
         </div>
